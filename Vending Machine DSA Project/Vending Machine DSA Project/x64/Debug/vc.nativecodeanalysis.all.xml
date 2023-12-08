@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Shammas PC\Desktop\Vending Machine DSA Project\Vending Machine DSA Project\Vending Machine DSA Project\</FILEPATH>
+      <FILENAME>source.cpp</FILENAME>
+      <LINE>24</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Cart::price' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Cart::{ctor}</FUNCTION>
+    <DECORATED>??0Cart@@QEAA@XZ</DECORATED>
+    <FUNCLINE>24</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Cart::price</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

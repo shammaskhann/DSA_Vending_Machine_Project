@@ -1,0 +1,3 @@
+﻿  source.cpp
+C:\Users\Shammas PC\Desktop\Vending Machine DSA Project\Vending Machine DSA Project\Vending Machine DSA Project\source.cpp(255,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Vending Machine DSA Project.vcxproj -> C:\Users\Shammas PC\Desktop\Vending Machine DSA Project\Vending Machine DSA Project\x64\Debug\Vending Machine DSA Project.exe
