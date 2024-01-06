@@ -9,7 +9,7 @@
 using namespace std;
 
 // Coin Struct
-struct Coin{
+struct Coin {
     int value;
     int quantity;
 };
@@ -21,7 +21,7 @@ struct Item {
     // Queue
     int front = -1;
     int rear = -1;
-    bool isAvailableQueue[5] = {false,false, false, false, false};
+    bool isAvailableQueue[5] = { false,false, false, false, false };
     Item* next;
 };
 // Array of Categories
@@ -37,20 +37,20 @@ struct Cart {
     double quantity;
 };
 Cart cartStack[5];
-int topCartStack= -1;
+int topCartStack = -1;
 int quantity_max_size = 5;
-Coin denominations[5] = {{500,2},{100,10},{50,10},{20,5},{10,10}};
-Category categories[5] ;
+Coin denominations[5] = { {500,2},{100,10},{50,10},{20,5},{10,10} };
+Category categories[5];
 int yourBalance;
 int totalAmount;
 void changeHandling();
 void calculateTotalAmount();
-void addToDenomination(int value,int quantity);
+void addToDenomination(int value, int quantity);
 void addBalance();
 void returnToMenuAnimation();
-bool pushToCart(Item* item,int quantity);
+bool pushToCart(Item* item, int quantity);
 Cart popFromCart();
-void enQueueItem(Category category,Item* item);
+void enQueueItem(Category category, Item* item);
 void deQueueItem(Category category, Item* item);
 void purchase();
 void removeItemFromCart();
@@ -60,9 +60,10 @@ void restockMenu();
 void adminLogin();
 void mainMenu();
 void initializeData();
+void clearCart();
 
 //ignore this function
-void initializeData(){
+void initializeData() {
     Item* pepsi = new Item;
     pepsi->id = "A1";
     pepsi->name = "Pepsi";
@@ -70,8 +71,8 @@ void initializeData(){
     pepsi->isAvailableQueue[1] = true;
     pepsi->isAvailableQueue[2] = true;
     pepsi->isAvailableQueue[3] = true;
-    pepsi->front=0;
-    pepsi->rear=3;
+    pepsi->front = 0;
+    pepsi->rear = 3;
     pepsi->price = 70;
     pepsi->next = NULL;
     Item* coke = new Item;
@@ -115,7 +116,7 @@ void initializeData(){
     drinks->top = pepsi;
     categories[0] = *drinks;
     Item* lays = new Item;
-    lays->id="B1";
+    lays->id = "B1";
     lays->name = "Lays";
     lays->isAvailableQueue[0] = true;
     lays->isAvailableQueue[1] = true;
@@ -125,7 +126,7 @@ void initializeData(){
     lays->price = 50;
     lays->next = NULL;
     Item* doritos = new Item;
-    doritos->id="B2";
+    doritos->id = "B2";
     doritos->name = "Doritos";
 
     doritos->isAvailableQueue[0] = true;
@@ -138,7 +139,7 @@ void initializeData(){
     doritos->price = 120;
     doritos->next = NULL;
     Item* cheetos = new Item;
-    cheetos->id="B3";
+    cheetos->id = "B3";
     cheetos->name = "Cheetos";
     cheetos->isAvailableQueue[0] = true;
     cheetos->isAvailableQueue[1] = true;
@@ -147,7 +148,7 @@ void initializeData(){
     cheetos->price = 50;
     cheetos->next = NULL;
     Item* pringles = new Item;
-    pringles->id="B4";
+    pringles->id = "B4";
     pringles->name = "Pringles";
     pringles->isAvailableQueue[0] = true;
     pringles->isAvailableQueue[1] = true;
@@ -166,7 +167,7 @@ void initializeData(){
     chips->top = lays;
     categories[1] = *chips;
     Item* kitkat = new Item;
-    kitkat->id="C1";
+    kitkat->id = "C1";
     kitkat->name = "KitKat";
     kitkat->isAvailableQueue[0] = true;
     kitkat->isAvailableQueue[1] = true;
@@ -175,7 +176,7 @@ void initializeData(){
     kitkat->price = 50;
     kitkat->next = NULL;
     Item* mars = new Item;
-    mars->id="C2";
+    mars->id = "C2";
     mars->name = "Mars";
 
     mars->isAvailableQueue[0] = true;
@@ -187,7 +188,7 @@ void initializeData(){
     mars->price = 120;
     mars->next = NULL;
     Item* snickers = new Item;
-    snickers->id="C3";
+    snickers->id = "C3";
     snickers->name = "Snickers";
     snickers->isAvailableQueue[0] = true;
     snickers->isAvailableQueue[1] = true;
@@ -198,7 +199,7 @@ void initializeData(){
     snickers->price = 90;
     snickers->next = NULL;
     Item* bounty = new Item;
-    bounty->id="C4";
+    bounty->id = "C4";
     bounty->name = "Bounty";
     bounty->isAvailableQueue[0] = true;
     bounty->isAvailableQueue[1] = true;
@@ -217,7 +218,7 @@ void initializeData(){
     chocolates->top = kitkat;
     categories[2] = *chocolates;
     Item* skittles = new Item;
-    skittles->id="D1";
+    skittles->id = "D1";
     skittles->name = "Skittles";
     skittles->isAvailableQueue[0] = true;
     skittles->isAvailableQueue[1] = true;
@@ -229,7 +230,7 @@ void initializeData(){
     skittles->price = 50;
     skittles->next = NULL;
     Item* starburst = new Item;
-    starburst->id="D2";
+    starburst->id = "D2";
     starburst->name = "Starburst";
     starburst->isAvailableQueue[0] = true;
     starburst->isAvailableQueue[1] = true;
@@ -241,7 +242,7 @@ void initializeData(){
     starburst->price = 120;
     starburst->next = NULL;
     Item* mm = new Item;
-    mm->id="D3";
+    mm->id = "D3";
     mm->name = "M&M";
     mm->isAvailableQueue[0] = true;
     mm->isAvailableQueue[1] = true;
@@ -253,7 +254,7 @@ void initializeData(){
     mm->price = 90;
     mm->next = NULL;
     Item* twix = new Item;
-    twix->id="D4";
+    twix->id = "D4";
     twix->name = "Twix";
     twix->isAvailableQueue[0] = true;
     twix->isAvailableQueue[1] = true;
@@ -273,7 +274,7 @@ void initializeData(){
     candies->top = skittles;
     categories[3] = *candies;
     Item* juicyfrut = new Item;
-    juicyfrut->id="E1";
+    juicyfrut->id = "E1";
     juicyfrut->name = "JuicyFrut";
     juicyfrut->isAvailableQueue[0] = true;
     juicyfrut->isAvailableQueue[1] = true;
@@ -283,7 +284,7 @@ void initializeData(){
     juicyfrut->price = 50;
     juicyfrut->next = NULL;
     Item* trident = new Item;
-    trident->id="E2";
+    trident->id = "E2";
     trident->name = "Trident";
     trident->isAvailableQueue[0] = true;
     trident->isAvailableQueue[1] = true;
@@ -294,7 +295,7 @@ void initializeData(){
     trident->price = 120;
     trident->next = NULL;
     Item* orbit = new Item;
-    orbit->id="E3";
+    orbit->id = "E3";
     orbit->name = "Orbit";
     orbit->isAvailableQueue[0] = true;
     orbit->isAvailableQueue[1] = true;
@@ -302,11 +303,11 @@ void initializeData(){
     orbit->isAvailableQueue[3] = true;
     orbit->isAvailableQueue[4] = true;
     orbit->front = 0;
-    orbit->rear = 4;    
+    orbit->rear = 4;
     orbit->price = 90;
     orbit->next = NULL;
     Item* extra = new Item;
-    extra->id="E4";
+    extra->id = "E4";
     extra->name = "Extra";
     extra->isAvailableQueue[0] = true;
     extra->isAvailableQueue[1] = true;
@@ -325,165 +326,168 @@ void initializeData(){
     // topCategory = drinks;
     // bottom = gums;
 }
-int main(){
+int main() {
     initializeData();
     do
-    {   
-       mainMenu();
-    }while(true);
+    {
+        mainMenu();
+    } while (true);
     return 0;
 }
-void changeHandling(){
+void changeHandling() {
     int change = yourBalance - totalAmount;
     int tempChange = change;
     int denominationCount = 0;
-    for(int i = 0; i < 5; i++){
+    for (int i = 0; i < 5; i++) {
         denominationCount += denominations[i].quantity * denominations[i].value;
     }
-    if(change > 0){
-        if(change > denominationCount){
+    if (change > 0) {
+        if (change > denominationCount) {
             cout << "| Sorry, we don't have enough change to return" << endl;
             cout << "| Press Enter to Continue" << endl;
+            clearCart();
             (void)_getch();
             system("CLS");
             return;
         }
-        else{
-            for(int i = 0; i < 5; i++){
+        else {
+            for (int i = 0; i < 5; i++) {
                 int count = 0;
-                while(change >= denominations[i].value && denominations[i].quantity > 0){
+                while (change >= denominations[i].value && denominations[i].quantity > 0) {
                     change -= denominations[i].value;
                     denominations[i].quantity--;
                     count++;
                 }
-                if(count > 0){
+                if (count > 0) {
                     cout << "| Rs. " << denominations[i].value << " x " << count << endl;
                 }
             }
             cout << "| Change Returned" << endl;
             cout << "| Press Enter to Continue" << endl;
+            clearCart();
             (void)_getch();
             system("CLS");
             mainMenu();
             return;
         }
     }
-    else{
+    else {
         cout << "| No Change Returned" << endl;
         cout << "| Press Enter to Continue" << endl;
+        clearCart();
         (void)_getch();
         system("CLS");
-       mainMenu();
+        mainMenu();
     }
 }
-void calculateTotalAmount(){
+void calculateTotalAmount() {
     totalAmount = 0;
-    for(int i = 0; i < topCartStack + 1; i++){
+    for (int i = 0; i < topCartStack + 1; i++) {
         totalAmount += cartStack[i].price * cartStack[i].quantity;
     }
 
 }
-void addToDenomination(int value,int quantity){
-    for(int i = 0; i < 5; i++){
-        if(denominations[i].value == value){
+void addToDenomination(int value, int quantity) {
+    for (int i = 0; i < 5; i++) {
+        if (denominations[i].value == value) {
             denominations[i].quantity += quantity;
         }
     }
 }
-void addBalance(){
+void addBalance() {
     Coin receivedCoins[5];
-    Coin coin1 = {500,0};
-    Coin coin2 = {100,0};
-    Coin coin3 = {50,0};
-    Coin coin4 = {20,0};
-    Coin coin5 = {10,0};
+    Coin coin1 = { 500,0 };
+    Coin coin2 = { 100,0 };
+    Coin coin3 = { 50,0 };
+    Coin coin4 = { 20,0 };
+    Coin coin5 = { 10,0 };
     do
     {
-    system("CLS");
-    cout<<"|====================Add Balance====================|"<<endl;
-    cout<<"| Your Balance: "<<yourBalance<<endl;
-    cout<<"| Total Amount: "<<totalAmount<<endl;
-    cout<<"|---------------------------------------------------|"<<endl;
-    if(yourBalance < yourBalance + 100 )
-    {
-     cout << "| Enter the amount of money you want to insert: "<<endl;
-     cout << "| 1) Rs. 500"<<endl;
-     cout << "| 2) Rs. 100"<<endl;
-     cout << "| 3) Rs. 50"<<endl;
-     cout << "| 4) Rs. 20"<<endl;
-     cout << "| 5) Rs. 10"<<endl;
-     cout << "| 6) Proceed to Checkout"<<endl;
-     cout << "| 7) Return to Main Menu"<<endl;
-     int choice;
-     cout<< "| INPUT: ";
-     cin >> choice;
-     if(cin.fail()){
-     cin.clear();
-     cin.ignore(10000,'\n');
-     cout <<"| Invalid Input "<<endl;
-     cout <<"| Press Enter to Continue " << endl;
-     (void)_getch();
-     system("CLS");
-     addBalance();
-    }
-    switch(choice){
-        case 1:
-            yourBalance += 500;
-            coin1.quantity++;
-            break;
-        case 2:
-            yourBalance += 100;
-            coin2.quantity++;
-            break;
-        case 3:
-            yourBalance += 50;
-            coin3.quantity++;
-            break;
-        case 4:
-            yourBalance += 20;
-            coin4.quantity++;
-            break;
-        case 5:
-            yourBalance += 10;
-            coin5.quantity++;
-            break;
-        case 6:
-        addToDenomination(500,coin1.quantity);
-        addToDenomination(100,coin2.quantity);
-        addToDenomination(50,coin3.quantity);
-        addToDenomination(20,coin4.quantity);
-        addToDenomination(10,coin5.quantity);
-        // //UNIT TESTING OF DENOMINATIONS ADDITION
-        // for(int i = 0; i < 5; i++){
-        //     cout << denominations[i].value << " " << denominations[i].quantity << endl;
-        // }
-            changeHandling();
-            break;
-        case 7:
-            system("CLS");
-            break;
-        default:
-            cout<<"| Invalid Choice"<<endl;
-            break;
-    }
-    }
-    else{
-        cout << "| Balance Limit Reached " <<endl; 
-        cout << "| 1) Proceed to Checkout"<<endl;
-        cout << "| 2) Return to Main Menu"<<endl;
-        int choice;
-        cout<< "| INPUT:";
-        cin >> choice;
-        if(cin.fail()){
-        cin.clear();
-        cin.ignore(10000,'\n');
-        cout<<"| Invalid Input"<<endl;
-        cout <<"| Press Enter to Continue" << endl;
-        (void)_getch();
         system("CLS");
-        addBalance();
+        cout << "|====================Add Balance====================|" << endl;
+        cout << "| Your Balance: " << yourBalance << endl;
+        cout << "| Total Amount: " << totalAmount << endl;
+        cout << "|---------------------------------------------------|" << endl;
+        if (yourBalance < yourBalance + 100)
+        {
+            cout << "| Enter the amount of money you want to insert: " << endl;
+            cout << "| 1) Rs. 500" << endl;
+            cout << "| 2) Rs. 100" << endl;
+            cout << "| 3) Rs. 50" << endl;
+            cout << "| 4) Rs. 20" << endl;
+            cout << "| 5) Rs. 10" << endl;
+            cout << "| 6) Proceed to Checkout" << endl;
+            cout << "| 7) Return to Main Menu" << endl;
+            int choice;
+            cout << "| INPUT: ";
+            cin >> choice;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "| Invalid Input " << endl;
+                cout << "| Press Enter to Continue " << endl;
+                (void)_getch();
+                system("CLS");
+                addBalance();
+            }
+            switch (choice) {
+            case 1:
+                yourBalance += 500;
+                coin1.quantity++;
+                break;
+            case 2:
+                yourBalance += 100;
+                coin2.quantity++;
+                break;
+            case 3:
+                yourBalance += 50;
+                coin3.quantity++;
+                break;
+            case 4:
+                yourBalance += 20;
+                coin4.quantity++;
+                break;
+            case 5:
+                yourBalance += 10;
+                coin5.quantity++;
+                break;
+            case 6:
+                addToDenomination(500, coin1.quantity);
+                addToDenomination(100, coin2.quantity);
+                addToDenomination(50, coin3.quantity);
+                addToDenomination(20, coin4.quantity);
+                addToDenomination(10, coin5.quantity);
+                // //UNIT TESTING OF DENOMINATIONS ADDITION
+                // for(int i = 0; i < 5; i++){
+                //     cout << denominations[i].value << " " << denominations[i].quantity << endl;
+                // }
+                changeHandling();
+                break;
+            case 7:
+                system("CLS");
+                break;
+            default:
+                cout << "| Invalid Choice" << endl;
+                break;
+            }
         }
-        switch(choice){
+        else {
+            cout << "| Balance Limit Reached " << endl;
+            cout << "| 1) Proceed to Checkout" << endl;
+            cout << "| 2) Return to Main Menu" << endl;
+            int choice;
+            cout << "| INPUT:";
+            cin >> choice;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "| Invalid Input" << endl;
+                cout << "| Press Enter to Continue" << endl;
+                (void)_getch();
+                system("CLS");
+                addBalance();
+            }
+            switch (choice) {
             case 1:
                 changeHandling();
                 break;
@@ -491,45 +495,44 @@ void addBalance(){
                 system("CLS");
                 break;
             default:
-                cout<<"| Invalid Choice"<<endl;
+                cout << "| Invalid Choice" << endl;
                 break;
+            }
         }
-    }
-    
-    }while(true);
-    
 
+    } while (true);
 }
-void returnToMenuAnimation(){
+void returnToMenuAnimation() {
     cout << "| RETURNING TO MAIN MENU";
-        for (int a = 1; a < 6; a++)
-        {
-            Sleep(500);
-            cout << "...";
-        }
-        system("CLS");
-        mainMenu();
+    for (int a = 1; a < 6; a++)
+    {
+        Sleep(500);
+        cout << "...";
+    }
+    system("CLS");
+    mainMenu();
 }
-bool pushToCart(Item* item,int quantity) {
-    if(topCartStack == quantity_max_size - 1){
+bool pushToCart(Item* item, int quantity) {
+    if (topCartStack == quantity_max_size - 1) {
         cout << "| Cart is full" << endl;
+        system("CLS");
         return false;
     }
-    else{
+    else {
         Cart* cartItem = new Cart;
         cartItem->name = item->name;
         cartItem->price = item->price;
         cartItem->quantity = quantity;
         topCartStack++;
         cartStack[topCartStack] = *cartItem;
-        cout<<"| Item Added to Cart"<<endl;
-         returnToMenuAnimation();
+        cout << "| Item Added to Cart" << endl;
+        returnToMenuAnimation();
         return true;
     }
 }
 Cart popFromCart() {
     Cart temp;
-    if(topCartStack == -1){
+    if (topCartStack == -1) {
         cout << "| Cart is empty" << endl;
         return temp;
     }
@@ -539,20 +542,20 @@ Cart popFromCart() {
         topCartStack--;
         return temp;
     }
-} 
-void enQueueItem(Category category,Item* item) {
+}
+void enQueueItem(Category category, Item* item) {
     cout << "| Enter Quantity: ";
     int quantity;
     cin >> quantity;
-    cout<<"| Restocking Item";
+    cout << "| Restocking Item";
     for (int a = 1; a < 4; a++)
-        {
-            Sleep(500);
-            cout << "...";
-        }
-        cout<<endl;
+    {
+        Sleep(500);
+        cout << "...";
+    }
+    cout << endl;
     for (int i = 0; i < quantity; i++) {
-        cout<< "| " << item->name << " Added to the inventory" << endl;
+        cout << "| " << item->name << " Added to the inventory" << endl;
         if ((item->front == item->rear + 1) || ((item->front == 0) && (item->rear == quantity_max_size - 1))) {
             cout << "| The item inventory is at maximum capacity. No further restocking is possible at this time." << endl;
             break;
@@ -563,17 +566,17 @@ void enQueueItem(Category category,Item* item) {
         // }
         else
         {
-          item->rear = (item->rear + 1) % quantity_max_size;
-          item->isAvailableQueue[item->rear] = true;
+            item->rear = (item->rear + 1) % quantity_max_size;
+            item->isAvailableQueue[item->rear] = true;
         }
     }
     cout << "| Item Restocking Completed" << endl;
-    cout<<"| Press Enter to Continue"<<endl;
+    cout << "| Press Enter to Continue" << endl;
     (void)_getch();
     returnToMenuAnimation();
 }
 void deQueueItem(Category category, Item* item) {
-    if(item->rear == -1 && item->front == -1){
+    if (item->rear == -1 && item->front == -1) {
         cout << "| Item is out of stock" << endl;
         cout << "| Press Enter To Continue" << endl;
         (void)_getch();
@@ -600,79 +603,79 @@ void deQueueItem(Category category, Item* item) {
         }
     }
 }
-void purchase() 
+void purchase()
 {
-   cout << "| Enter the code of the item you want to purchase: ";
-   string code;
-   cin >> code;
-   if(cin.fail())
-   {
-    cin.clear();
-    cin.ignore(10000,'\n');
-    cout<<"| Invalid Input "<<endl;
-    cout <<  "| Press Enter to Continue" << endl;
-    (void)_getch();
-    system("CLS");
-    return;
-   }
-   transform(code.begin(), code.end(), code.begin(), ::toupper); 
-   char categoryCode = code[0];
-   int categoryCodeInt;
-   if (categoryCode == 'A') {
-         categoryCodeInt = 0;
+    cout << "| Enter the code of the item you want to purchase: ";
+    string code;
+    cin >> code;
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "| Invalid Input " << endl;
+        cout << "| Press Enter to Continue" << endl;
+        (void)_getch();
+        system("CLS");
+        return;
     }
-   else if (categoryCode == 'B') {
-         categoryCodeInt = 1;
+    transform(code.begin(), code.end(), code.begin(), ::toupper);
+    char categoryCode = code[0];
+    int categoryCodeInt;
+    if (categoryCode == 'A') {
+        categoryCodeInt = 0;
     }
-    else if(categoryCode == 'C') {
-         categoryCodeInt = 2;
+    else if (categoryCode == 'B') {
+        categoryCodeInt = 1;
     }
-    else if(categoryCode == 'D') {
-         categoryCodeInt = 3;
+    else if (categoryCode == 'C') {
+        categoryCodeInt = 2;
     }
-    else if(categoryCode == 'E'){
-         categoryCodeInt = 4;
+    else if (categoryCode == 'D') {
+        categoryCodeInt = 3;
+    }
+    else if (categoryCode == 'E') {
+        categoryCodeInt = 4;
     }
     else
     {
-         cout << "| Wrong Product Code" << endl;
-         return;
-    } 
-   Item* item = categories[categoryCodeInt].top;
-   while (item != NULL) {
-       if (item->id == code) {
-           break;
-       }
-       item = item->next;
-   }
-   if (item == NULL) 
-   {
-       cout << "| Wrong Product Code" << endl;
-       return;
-   }
-   else 
-   {
-     
-             deQueueItem(categories[categoryCodeInt],item);
-             return;
-   }
-}    
-void removeItemFromCart() 
+        cout << "| Wrong Product Code" << endl;
+        return;
+    }
+    Item* item = categories[categoryCodeInt].top;
+    while (item != NULL) {
+        if (item->id == code) {
+            break;
+        }
+        item = item->next;
+    }
+    if (item == NULL)
+    {
+        cout << "| Wrong Product Code" << endl;
+        return;
+    }
+    else
+    {
+
+        deQueueItem(categories[categoryCodeInt], item);
+        return;
+    }
+}
+void removeItemFromCart()
 {
-    cout<< "| Enter the item no you want to remove: ";
+    cout << "| Enter the item no you want to remove: ";
     int itemNo;
     cin >> itemNo;
-    if(cin.fail())
+    if (cin.fail())
     {
-    cin.clear();
-    cin.ignore(10000,'\n');
-    cout<<"| Invalid Input "<<endl;
-    cout <<  "| Press Enter to Continue" << endl;
-    (void)_getch();
-    system("CLS");
-    return;
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "| Invalid Input " << endl;
+        cout << "| Press Enter to Continue" << endl;
+        (void)_getch();
+        system("CLS");
+        return;
     }
-    if(itemNo > topCartStack + 1)
+    if (itemNo > topCartStack + 1)
     {
         cout << "| Invalid Item No" << endl;
         cout << "| Press Enter to Continue" << endl;
@@ -682,135 +685,154 @@ void removeItemFromCart()
     }
     else
     {
-       //Create a temp stack pop and save it till the given index and pop the given index and push the temp stack back to the cart stack
-         Cart tempStack[5];
-            int topTempStack = -1;
-            for (int i = 0; i < itemNo - 1; i++) {
-                Cart temp = popFromCart();
-                topTempStack++;
-                tempStack[topTempStack] = temp;
-            }
+        //Create a temp stack pop and save it till the given index and pop the given index and push the temp stack back to the cart stack
+         //  Cart tempStack[5];
+         //     int topTempStack = -1;
+         //     for (int i = 0; i < itemNo - 1; i++) {
+         //         Cart temp = popFromCart();
+         //         topTempStack++;
+         //         tempStack[topTempStack] = temp;
+         //     }
+         //     Cart temp = popFromCart();
+         //     for (int i = 0; i < topTempStack + 1; i++) {
+         //         topCartStack++;
+         //         cartStack[topCartStack] = tempStack[i];
+         //     }
+         //     cout << "| Item Removed" << endl;
+         //     cout << "| Press Enter to Continue" << endl;
+         //     (void)_getch();
+         //     system("CLS");
+         //     return;
+        Cart* tempStack = new Cart[topCartStack + 1];
+        int topTempStack = -1;
+        for (int i = 0; i < itemNo - 1; i++) {
             Cart temp = popFromCart();
-            for (int i = 0; i < topTempStack + 1; i++) {
-                topCartStack++;
-                cartStack[topCartStack] = tempStack[i];
-            }
-            cout << "| Item Removed" << endl;
-            cout << "| Press Enter to Continue" << endl;
-            (void)_getch();
-            system("CLS");
-            return;
-    }                           
-}
-void cartMenu(){
-    system("CLS");
-        cout << "|------Your Cart--------|" << endl;
-        if(topCartStack == -1){
-            cout << "| Cart is empty" << endl;
-            cout << "| Press Enter to Continue" << endl;
-            (void)_getch();
-            system("CLS");
-            return;
+            topTempStack++;
+            tempStack[topTempStack] = temp;
         }
-        else{
-    for (int i = 0; i < topCartStack + 1; i++) {
-        cout << "|-----------"<<i+1<<"-----------|" << endl;
-        cout << "| " << setw(4) << left << cartStack[i].name << " \t\t"<< "|" << endl;
-         cout << "| " << setw(4) << left <<"Quantity: " <<cartStack[i].quantity << " \t\t" << "|" << endl;
-        cout << "| Rs. " << setw(4) << left << cartStack[i].price << " \t\t" << "|" << endl;
+        Cart temp = popFromCart();
+        for (int i = topTempStack; i >= 0; i--) {
+            topCartStack++;
+            cartStack[topCartStack] = tempStack[i];
+        }
+        delete[] tempStack;
+        cout << "| Item Removed" << endl;
+        cout << "| Press Enter to Continue" << endl;
+        cin.get();
+        system("CLS");
+        return;
+    }
+}
+void cartMenu() {
+    system("CLS");
+    cout << "|------Your Cart--------|" << endl;
+    if (topCartStack == -1) {
+        cout << "| Cart is empty" << endl;
+        cout << "| Press Enter to Continue" << endl;
+        (void)_getch();
+        system("CLS");
+        mainMenu();
+    }
+    else {
+        for (int i = 0; i < topCartStack + 1; i++) {
+            cout << "|-----------" << i + 1 << "-----------|" << endl;
+            cout << "| " << setw(4) << left << cartStack[i].name << " \t\t" << "|" << endl;
+            cout << "| " << setw(4) << left << "Quantity: " << cartStack[i].quantity << " \t\t" << "|" << endl;
+            cout << "| Rs. " << setw(4) << left << cartStack[i].price << " \t\t" << "|" << endl;
+            cout << "|-----------------------|" << endl;
+        }
         cout << "|-----------------------|" << endl;
-    }
-    cout << "|-----------------------|" << endl;
-    cout << "| 1. Checkout           |"<< endl;
-    cout << "| 2. Remove Item        |"<<endl;
-    cout << "| 3. Return to Main Menu|"<<endl;
-    cout << "|=======================|" << endl;
-    cout<<"| INPUT: ";   
-   int choice;
-   cin>>choice;
-    if(cin.fail()){
-    cin.clear();
-    cin.ignore(10000,'\n');
-    cout<<"| Invalid Input"<<endl;
-    cout<<"| Press Enter to Continue" << endl;
-    (void)_getch();
-    system("CLS");
-    cartMenu();
-   }
-
-   switch(choice){
-       case 1:
-           calculateTotalAmount();
-           addBalance();
-           break;
-       case 2:
-           removeItemFromCart();
-           break;
-       case 3:
-           system("CLS");
-              break;
-       case 4:
-           exit(0);
-           break;
-       default:
-           cout<<"| Invalid Choice"<<endl;
-           break;
-}
+        cout << "| 1. Checkout           |" << endl;
+        cout << "| 2. Remove Last Item   |" << endl;
+        cout << "| 3. Return to Main Menu|" << endl;
+        cout << "|=======================|" << endl;
+        cout << "| INPUT: ";
+        int choice;
+        cin >> choice;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "| Invalid Input" << endl;
+            cout << "| Press Enter to Continue" << endl;
+            (void)_getch();
+            system("CLS");
+            cartMenu();
         }
+
+        switch (choice) {
+        case 1:
+            calculateTotalAmount();
+            addBalance();
+            break;
+        case 2:
+            removeItemFromCart();
+            break;
+        case 3:
+            system("CLS");
+            mainMenu();
+            break;
+        case 4:
+            exit(0);
+            break;
+        default:
+            cout << "| Invalid Choice" << endl;
+            break;
+        }
+    }
 }
-void restockItem(){
+void restockItem() {
     cout << "| Enter the code of the item you want to restock: ";
-   string code;
-   cin >> code;
-   if(cin.fail()){
-    cin.clear();
-    cin.ignore(10000,'\n');
-    cout<<"| Invalid Input "<<endl;
-    cout <<  "| Press Enter to Continue" << endl;
-    (void)_getch();
-    system("CLS");
-    return;
-   }
-   transform(code.begin(), code.end(), code.begin(), ::toupper); 
-   char categoryCode = code[0];
-   int categoryCodeInt;
-   if (categoryCode == 'A') {
-         categoryCodeInt = 0;
+    string code;
+    cin >> code;
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "| Invalid Input " << endl;
+        cout << "| Press Enter to Continue" << endl;
+        (void)_getch();
+        system("CLS");
+        return;
     }
-   else if (categoryCode == 'B') {
-         categoryCodeInt = 1;
+    transform(code.begin(), code.end(), code.begin(), ::toupper);
+    char categoryCode = code[0];
+    int categoryCodeInt;
+    if (categoryCode == 'A') {
+        categoryCodeInt = 0;
     }
-    else if(categoryCode == 'C') {
-         categoryCodeInt = 2;
+    else if (categoryCode == 'B') {
+        categoryCodeInt = 1;
     }
-    else if(categoryCode == 'D') {
-         categoryCodeInt = 3;
+    else if (categoryCode == 'C') {
+        categoryCodeInt = 2;
     }
-    else if(categoryCode == 'E'){
-         categoryCodeInt = 4;
+    else if (categoryCode == 'D') {
+        categoryCodeInt = 3;
     }
-    else{
-         cout << "| Wrong Product Code" << endl;
-         return;
-   } 
-   Item* item = categories[categoryCodeInt].top;
-   while (item != NULL) {
-       if (item->id == code) {
-           break;
-       }
-       item = item->next;
-   }
-   if (item == NULL) {
-       cout << "| Item not found" << endl;
-       return;
-   }
-   else {
-       enQueueItem(categories[categoryCodeInt],item);
-       return;
-   }
+    else if (categoryCode == 'E') {
+        categoryCodeInt = 4;
+    }
+    else {
+        cout << "| Wrong Product Code" << endl;
+        return;
+    }
+    Item* item = categories[categoryCodeInt].top;
+    while (item != NULL) {
+        if (item->id == code) {
+            break;
+        }
+        item = item->next;
+    }
+    if (item == NULL) {
+        cout << "| Item not found" << endl;
+        return;
+    }
+    else {
+        enQueueItem(categories[categoryCodeInt], item);
+        return;
+    }
 
 }
-void restockMenu(){
+void restockMenu() {
     system("CLS");
     cout << "|========================Restock Menu===========================|" << endl;
     for (int i = 0; i < 5; i++) {
@@ -826,13 +848,13 @@ void restockMenu(){
                     break;
                 }
             }
-            cout << "| " << setw(4) << left  << item->name << "(" << availableCount << ") \t";
+            cout << "| " << setw(4) << left << item->name << "(" << availableCount << ") \t";
             item = item->next;
         }
-        cout<< "|" << endl;
+        cout << "|" << endl;
         item = category.top;
         while (item != NULL) {
-            cout << "|" << setw(4) << left <<" Code: "<< item->id << "" << " \t";
+            cout << "|" << setw(4) << left << " Code: " << item->id << "" << " \t";
             item = item->next;
         }
         cout << "|" << endl;
@@ -840,35 +862,35 @@ void restockMenu(){
     }
     cout << "| 1. Restock    | 2. Return to Main Menu        | 3. Exit       | " << endl;
     cout << "|===============================================================|" << endl;
-    cout<<"| INPUT: ";   
-   int choice;
-   cin>>choice;
-    if(cin.fail()){
-    cin.clear();
-    cin.ignore(10000,'\n');
-    cout<<"| Invalid Input"<<endl;
-    cout <<"| Press Enter to Continue" << endl;
-    (void)_getch();
-    system("CLS");
-    restockMenu();
-   }
-   switch(choice){
-       case 1:
-           restockItem();
-           break;
-       case 2:
-           system("CLS");
-           break;
-       case 3:
-           exit(0);
-           break;
-       default:
-           cout<<"| Invalid Choice"<<endl;
-           break;
-}
+    cout << "| INPUT: ";
+    int choice;
+    cin >> choice;
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "| Invalid Input" << endl;
+        cout << "| Press Enter to Continue" << endl;
+        (void)_getch();
+        system("CLS");
+        restockMenu();
+    }
+    switch (choice) {
+    case 1:
+        restockItem();
+        break;
+    case 2:
+        system("CLS");
+        break;
+    case 3:
+        exit(0);
+        break;
+    default:
+        cout << "| Invalid Choice" << endl;
+        break;
+    }
 
 }
-void adminLogin(){
+void adminLogin() {
     system("CLS");
     string pass = "";
     char ch;
@@ -882,7 +904,7 @@ void adminLogin(){
         ch = _getch();
     }
     cout << endl;
-    if(pass == "admin"){
+    if (pass == "admin") {
         cout << "| Login Successful" << endl;
         cout << "| Loading...";
         for (int a = 1; a < 4; a++)
@@ -893,7 +915,7 @@ void adminLogin(){
         system("CLS");
         restockMenu();
     }
-    else{
+    else {
         cout << "| Wrong Password" << endl;
         cout << "| Press Enter to Continue" << endl;
         (void)_getch();
@@ -907,7 +929,7 @@ void mainMenu() {
         Category category = categories[i];
         Item* item = category.top;
         while (item != NULL) {
-            
+
             int availableCount = 0;
             for (int j = 0; j < 5; j++) {
                 ////UNIT TESTING OF QUEUE AVAIBILITY
@@ -917,13 +939,13 @@ void mainMenu() {
                     availableCount++;
                 }
             }
-            cout << "| " << setw(4) << left  << item->name << "(" << availableCount << ") \t";
+            cout << "| " << setw(4) << left << item->name << "(" << availableCount << ") \t";
             item = item->next;
         }
-        cout<< "|" << endl;
+        cout << "|" << endl;
         item = category.top;
         while (item != NULL) {
-            cout << "|" << setw(4) << left <<" Code: "<< item->id << "" << " \t";
+            cout << "|" << setw(4) << left << " Code: " << item->id << "" << " \t";
             item = item->next;
         }
         cout << "|" << endl;
@@ -937,34 +959,40 @@ void mainMenu() {
     }
     cout << "| 1. Purchase   | 2. Restock    | 3. Cart       | 4. Exit       | " << endl;
     cout << "|===============================================================|" << endl;
-    cout<<"| INPUT: ";   
-   int choice;
-   cin>>choice;
-    if(cin.fail()){
-    cin.clear();
-    cin.ignore(10000,'\n');
-    cout<<"| Invalid Input"<<endl;
-    cout <<"| Press Enter to Continue" << endl;
-    (void)_getch();
-    system("CLS");
-    mainMenu();
-   }else{
-   switch(choice){
-       case 1:
-           purchase();
-           break;
-       case 2:
-           adminLogin();
-           break;
-       case 3:
-              cartMenu();
-              break;
-       case 4:
-           exit(0);
-           break;
-       default:
-           cout<<"| Invalid Choice"<<endl;
-           break;
+    cout << "| INPUT: ";
+    int choice;
+    cin >> choice;
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "| Invalid Input" << endl;
+        cout << "| Press Enter to Continue" << endl;
+        (void)_getch();
+        system("CLS");
+        mainMenu();
+    }
+    else {
+        switch (choice) {
+        case 1:
+            purchase();
+            break;
+        case 2:
+            adminLogin();
+            break;
+        case 3:
+            cartMenu();
+            break;
+        case 4:
+            exit(0);
+            break;
+        default:
+            cout << "| Invalid Choice" << endl;
+            break;
+        }
+    }
 }
-}
+void clearCart() {
+    topCartStack = -1;
+    yourBalance = 0;
+    //totalAmount = 0;
 }
