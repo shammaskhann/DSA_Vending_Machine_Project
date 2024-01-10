@@ -8,12 +8,11 @@
 
 using namespace std;
 
-// Coin Struct
 struct Coin {
     int value;
     int quantity;
 };
-// Item Linked List
+
 struct Item {
     string id;
     string name;
@@ -24,13 +23,12 @@ struct Item {
     bool isAvailableQueue[5] = { false,false, false, false, false };
     Item* next;
 };
-// Array of Categories
+
 struct Category {
     string name;
     Item* top;
     Category* next;
 };
-// Cart Stack
 struct Cart {
     string name;
     int price;
@@ -117,7 +115,7 @@ void initializeData() {
     categories[0] = *drinks;
     Item* lays = new Item;
     lays->id = "B1";
-    lays->name = "Lays";
+    lays->name = "Lays   ";
     lays->isAvailableQueue[0] = true;
     lays->isAvailableQueue[1] = true;
     lays->isAvailableQueue[2] = true;
@@ -177,7 +175,7 @@ void initializeData() {
     kitkat->next = NULL;
     Item* mars = new Item;
     mars->id = "C2";
-    mars->name = "Mars";
+    mars->name = "Mars    ";
 
     mars->isAvailableQueue[0] = true;
     mars->isAvailableQueue[1] = true;
@@ -243,7 +241,7 @@ void initializeData() {
     starburst->next = NULL;
     Item* mm = new Item;
     mm->id = "D3";
-    mm->name = "M&M";
+    mm->name = "M&M    ";
     mm->isAvailableQueue[0] = true;
     mm->isAvailableQueue[1] = true;
     mm->isAvailableQueue[2] = true;
@@ -255,7 +253,7 @@ void initializeData() {
     mm->next = NULL;
     Item* twix = new Item;
     twix->id = "D4";
-    twix->name = "Twix";
+    twix->name = "Twix   ";
     twix->isAvailableQueue[0] = true;
     twix->isAvailableQueue[1] = true;
     twix->isAvailableQueue[2] = true;
@@ -334,6 +332,7 @@ int main() {
     } while (true);
     return 0;
 }
+
 void changeHandling() {
     int change = yourBalance - totalAmount;
     int tempChange = change;
@@ -452,11 +451,26 @@ void addBalance() {
                 coin5.quantity++;
                 break;
             case 6:
-                addToDenomination(500, coin1.quantity);
-                addToDenomination(100, coin2.quantity);
-                addToDenomination(50, coin3.quantity);
-                addToDenomination(20, coin4.quantity);
-                addToDenomination(10, coin5.quantity);
+                if(yourBalance < totalAmount){
+                    cout<< "| Insufficient Balance" << endl;
+                    for(int a=1 ; a<4 ; a++)
+                    {
+                        Sleep(500);
+                        cout<<"...";
+                    }
+                }else{
+                    addToDenomination(500, coin1.quantity);
+                    addToDenomination(100, coin2.quantity);
+                    addToDenomination(50, coin3.quantity);
+                    addToDenomination(20, coin4.quantity);
+                    addToDenomination(10, coin5.quantity);
+                    cout<<"| Proceeding to Checkout";
+                    for(int a=1 ; a<4 ; a++)
+                    {
+                        Sleep(500);
+                        cout<<"...";
+                    }
+                }
                 // //UNIT TESTING OF DENOMINATIONS ADDITION
                 // for(int i = 0; i < 5; i++){
                 //     cout << denominations[i].value << " " << denominations[i].quantity << endl;
@@ -555,7 +569,7 @@ void enQueueItem(Category category, Item* item) {
     }
     cout << endl;
     for (int i = 0; i < quantity; i++) {
-        cout << "| " << item->name << " Added to the inventory" << endl;
+        
         if ((item->front == item->rear + 1) || ((item->front == 0) && (item->rear == quantity_max_size - 1))) {
             cout << "| The item inventory is at maximum capacity. No further restocking is possible at this time." << endl;
             break;
@@ -566,6 +580,7 @@ void enQueueItem(Category category, Item* item) {
         // }
         else
         {
+            cout << "| " << item->name << " Added to the inventory" << endl;
             item->rear = (item->rear + 1) % quantity_max_size;
             item->isAvailableQueue[item->rear] = true;
         }
@@ -662,66 +677,19 @@ void purchase()
 }
 void removeItemFromCart()
 {
-    cout << "| Enter the item no you want to remove: ";
-    int itemNo;
-    cin >> itemNo;
-    if (cin.fail())
-    {
-        cin.clear();
-        cin.ignore(10000, '\n');
-        cout << "| Invalid Input " << endl;
+    //Delete the last Item Entered in the Cart 
+    Cart item = popFromCart();
+    if (item.name == "") {
+        return;
+    }
+    else {
+        cout << "| " << item.name << " Removed from Cart" << endl;
         cout << "| Press Enter to Continue" << endl;
         (void)_getch();
         system("CLS");
-        return;
+        cartMenu();
     }
-    if (itemNo > topCartStack + 1)
-    {
-        cout << "| Invalid Item No" << endl;
-        cout << "| Press Enter to Continue" << endl;
-        (void)_getch();
-        system("CLS");
-        return;
-    }
-    else
-    {
-        //Create a temp stack pop and save it till the given index and pop the given index and push the temp stack back to the cart stack
-         //  Cart tempStack[5];
-         //     int topTempStack = -1;
-         //     for (int i = 0; i < itemNo - 1; i++) {
-         //         Cart temp = popFromCart();
-         //         topTempStack++;
-         //         tempStack[topTempStack] = temp;
-         //     }
-         //     Cart temp = popFromCart();
-         //     for (int i = 0; i < topTempStack + 1; i++) {
-         //         topCartStack++;
-         //         cartStack[topCartStack] = tempStack[i];
-         //     }
-         //     cout << "| Item Removed" << endl;
-         //     cout << "| Press Enter to Continue" << endl;
-         //     (void)_getch();
-         //     system("CLS");
-         //     return;
-        Cart* tempStack = new Cart[topCartStack + 1];
-        int topTempStack = -1;
-        for (int i = 0; i < itemNo - 1; i++) {
-            Cart temp = popFromCart();
-            topTempStack++;
-            tempStack[topTempStack] = temp;
-        }
-        Cart temp = popFromCart();
-        for (int i = topTempStack; i >= 0; i--) {
-            topCartStack++;
-            cartStack[topCartStack] = tempStack[i];
-        }
-        delete[] tempStack;
-        cout << "| Item Removed" << endl;
-        cout << "| Press Enter to Continue" << endl;
-        cin.get();
-        system("CLS");
-        return;
-    }
+        
 }
 void cartMenu() {
     system("CLS");
@@ -813,6 +781,7 @@ void restockItem() {
     }
     else {
         cout << "| Wrong Product Code" << endl;
+        system("CLS");  //clear screen
         return;
     }
     Item* item = categories[categoryCodeInt].top;
